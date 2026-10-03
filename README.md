@@ -14,6 +14,18 @@ app with zone thermostats, sensor status, settings and an account screen.
 > The demo uses **simulated sensor readings**. It is not connected to real
 > thermostats. See [Connect real hardware](#connect-real-hardware-and-devices).
 
+## What's new in 1.1
+
+- Redesigned landing page with a live, interactive thermostat, light and dark themes, and a mobile menu.
+- App: **Activity** log, one-tap **scenes** (Comfort, Busy, Eco, All off), trend charts, weekly **schedule**
+  with eco setback and pre-cooling, add/rename/remove zones, alert limits, light/dark/auto theme.
+- **Export / import** settings (JSON) and readings (CSV).
+- **Installable and offline** (`sw.js`, `js/pwa.js`). When you republish, bump `VERSION` in `sw.js`
+  so visitors get the new files.
+
+See `CHANGELOG.md` for details. Sensors are simulated and sync works between windows of the same browser;
+the section below explains how to connect real devices.
+
 ## Publish on GitHub Pages
 
 1. Create a new repository on GitHub (for example `tempwise`).
@@ -87,15 +99,18 @@ tempwise/
 │   ├── config.js           Optional site settings (repo link)
 │   ├── site.js             Landing page script
 │   ├── sync.js             Settings sync adapter (localStorage)
+│   ├── pwa.js              Registers the service worker
 │   └── app.js              The app: screens, thermostat logic, simulated sensors
 ├── assets/
 │   ├── favicon.svg
 │   ├── icon-192.png, icon-512.png
 │   ├── screens/            Screenshots used on the landing page
 │   └── fonts/              Manrope and Unbounded (SIL Open Font License)
+├── sw.js                   Service worker (offline). Bump VERSION when you republish
 ├── manifest.webmanifest    Lets the app be added to a phone home screen
 ├── .nojekyll               Tells GitHub Pages to serve files as they are
 ├── LICENSE
+├── CHANGELOG.md
 └── README.md
 ```
 

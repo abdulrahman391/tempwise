@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>TempWise: Perfect temperature. Automatically.</title>
-  <meta name="description" content="TempWise keeps shops, gyms and work floors at the right temperature. Set a target for each zone, watch every sensor, and try changes safely in Local mode.">
+  <meta name="description" content="TempWise keeps shops, gyms and work floors at the right temperature. Set a target for each zone, run weekly schedules and scenes, watch every sensor, and try changes safely in Local mode.">
   <meta name="theme-color" content="#06111c">
   <meta property="og:type" content="website">
   <meta property="og:title" content="TempWise">
@@ -12,21 +12,25 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/icon-192.png">
   <link rel="manifest" href="manifest.webmanifest">
+  <script>try{var t=localStorage.getItem('tempwise:theme')||'dark';if(t!=='auto')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
   <link rel="stylesheet" href="css/site.css">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <header class="nav">
+  <header class="nav" id="top">
     <a class="brand" href="./" aria-label="TempWise home"><img src="assets/favicon.svg" alt="" width="34" height="34"><b>Temp<span>Wise</span></b></a>
-    <nav aria-label="Main">
+    <nav id="menu" aria-label="Main">
       <a href="#features">Features</a>
       <a href="#how">How it works</a>
       <a href="#screens">Screens</a>
       <a href="#faq">FAQ</a>
+      <a class="menu-only" data-repo href="https://github.com/">GitHub</a>
     </nav>
     <div class="nav-cta">
-      <a class="btn ghost" data-repo href="https://github.com/">GitHub</a>
+      <button class="icon-btn" id="theme-btn" type="button" aria-label="Change theme" title="Change theme"></button>
+      <a class="btn ghost hide-sm" data-repo href="https://github.com/">GitHub</a>
       <a class="btn primary" href="app/">Open the app</a>
+      <button class="icon-btn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
   </header>
 
@@ -35,16 +39,39 @@
       <div class="hero-copy">
         <p class="eyebrow">For shops, gyms and work floors</p>
         <h1>Perfect temperature. <span class="grad">Automatically.</span></h1>
-        <p class="lede">Work spaces get hot where people move and cold where they don’t. TempWise gives every zone its own target, shows what each sensor reads right now, and warns you before a room gets uncomfortable.</p>
+        <p class="lede">Work spaces get hot where people move and cold where they don’t. TempWise gives every zone its own target and schedule, shows what each sensor reads right now, and warns you before a room gets uncomfortable.</p>
         <div class="cta-row">
           <a class="btn primary big" href="app/">Try the live demo</a>
           <a class="btn ghost big" data-repo href="https://github.com/">View on GitHub</a>
         </div>
-        <p class="fine">The demo runs in your browser with simulated sensors. Nothing is sent anywhere.</p>
+        <ul class="ticks" aria-label="Highlights">
+          <li>Weekly schedules and scenes</li>
+          <li>Works offline, installs as an app</li>
+          <li>Free and open source (MIT)</li>
+        </ul>
       </div>
-      <div class="hero-art" aria-hidden="true">
-        <div class="phone back"><img src="assets/screens/local.png" alt="" width="780" height="1400"></div>
-        <div class="phone front"><img src="assets/screens/home.png" alt="" width="780" height="1400"></div>
+
+      <div class="hero-art">
+        <div class="live" id="live" aria-label="Interactive thermostat demo">
+          <div class="live-top"><div><b>Gym floor</b><small>Sensor 01 · try it</small></div><span class="tag" id="lv-status">Cooling</span></div>
+          <div class="live-gauge">
+            <svg id="lv-svg" viewBox="0 0 200 172" aria-hidden="true"></svg>
+            <div class="center"><div class="lbl">Target</div><div class="big" id="lv-target">21.0<sup>°C</sup></div><div class="now">Now <b id="lv-now">24.4°C</b></div></div>
+          </div>
+          <div class="live-step">
+            <button type="button" id="lv-minus" aria-label="Lower target">−</button>
+            <span id="lv-hint">Cooling to target</span>
+            <button type="button" id="lv-plus" aria-label="Raise target">+</button>
+          </div>
+          <div class="live-scenes" role="group" aria-label="Scenes">
+            <button type="button" data-lv="comfort" aria-pressed="true">Comfort</button>
+            <button type="button" data-lv="busy" aria-pressed="false">Busy</button>
+            <button type="button" data-lv="eco" aria-pressed="false">Eco</button>
+          </div>
+          <div class="live-foot"><button type="button" id="lv-unit" aria-label="Switch between Celsius and Fahrenheit">°C</button><small>Simulated. Nothing is sent anywhere.</small></div>
+        </div>
+        <div class="float f1" aria-hidden="true"><i class="dot warn"></i><b>Workshop</b><span>Humid 66%</span></div>
+        <div class="float f2" aria-hidden="true"><i class="dot ok"></i><b>Loading bay</b><span>22.4° Normal</span></div>
       </div>
     </section>
 
@@ -61,12 +88,15 @@
         <h2>Everything a zone needs, nothing it doesn’t.</h2>
       </div>
       <div class="features">
-        <article class="feat"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 14.8V5a2 2 0 10-4 0v9.8a4 4 0 104 0z"/></svg></span><h3>Zone control</h3><p>Pick a target and a mode (cool, heat, auto or off) for each area. The dial shows the target and the current reading together.</p></article>
-        <article class="feat"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"/><circle cx="12" cy="19" r="1.3"/></svg></span><h3>Sensor status</h3><p>See temperature and humidity for every sensor, how long ago it reported, and which ones are offline.</p></p></article>
-        <article class="feat"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg></span><h3>Alerts you set</h3><p>Choose a high-temperature limit and a humidity limit. Turn push, email, and offline-sensor alerts on or off one by one.</p></article>
-        <article class="feat"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M11 20A7 7 0 014 13c0-6 7-10 16-10 0 9-4 16-10 16M4 21c3-6 7-9 11-11"/></svg></span><h3>Automation</h3><p>An eco schedule relaxes targets outside opening hours. Occupancy cooling and pre-cooling get a room ready before it fills.</p></article>
-        <article class="feat"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 11-2.6-6.4L21 8M21 3v5h-5"/></svg></span><h3>Live sync</h3><p>Change a setting in one window and every other open window updates within a second, with a note about what changed.</p></article>
-        <article class="feat"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg></span><h3>Local mode</h3><p>Try a different temperature on one device without touching the thermostat or anyone else’s screen. Keep it or throw it away.</p></article>
+        <article class="feat"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 14.8V5a2 2 0 10-4 0v9.8a4 4 0 104 0z"/></svg></span><h3>Zone control</h3><p>Pick a target and a mode (cool, heat, auto or off) for each area. The dial shows the target and the current reading together.</p></article>
+        <article class="feat"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg></span><h3>Sensors and trends</h3><p>Temperature, humidity and a trend line for every sensor, plus a clear flag when one goes offline.</p></article>
+        <article class="feat"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span><h3>One-tap scenes</h3><p>Comfort, Busy, Eco and All off. One tap sets every zone, and the active scene lights up.</p></article>
+        <article class="feat"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><h3>Weekly schedule</h3><p>Set opening hours for each day. Outside them, Eco relaxes targets. Pre-cooling gets rooms ready before you open.</p></article>
+        <article class="feat"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg></span><h3>Alerts you set</h3><p>Choose a high-temperature limit and a humidity limit. Turn each alert type on or off on its own.</p></article>
+        <article class="feat"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v5l3 2"/><circle cx="12" cy="12" r="9"/></svg></span><h3>Activity log</h3><p>See every alert and every change, and which window made it. Nothing changes without a record.</p></article>
+        <article class="feat"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 11-2.6-6.4L21 8M21 3v5h-5"/></svg></span><h3>Live sync</h3><p>Change a setting in one window and every other open window updates within a second, with a note about what changed.</p></article>
+        <article class="feat"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg></span><h3>Local mode</h3><p>Try a different temperature in one window without touching the thermostat or anyone else’s screen. Keep it or throw it away.</p></article>
+        <article class="feat"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg></span><h3>Your data, offline</h3><p>Export settings and readings, import them back, install TempWise as an app and keep using it without a connection.</p></article>
       </div>
     </section>
 
@@ -75,12 +105,12 @@
         <div>
           <p class="eyebrow">Local mode</p>
           <h2 id="local-h">Try it first. Change nothing.</h2>
-          <p>Switch on Local mode and every change you make stays on your device. The thermostat keeps holding the synced value, other screens don’t move, and anything you changed is tagged <span class="tag">Local</span>.</p>
+          <p>Switch on Local mode and every change you make stays in your window. The thermostat keeps holding the synced value, other screens don’t move, and anything you changed is tagged <span class="tag local">Local</span>.</p>
           <p>When you like what you see, <b>Sync to all devices</b> makes it real. If you don’t, <b>Discard</b> puts everything back.</p>
         </div>
         <div class="demo-pair" aria-hidden="true">
           <div class="state"><span>Synced</span><b>21.0°</b><small>What the thermostat holds</small></div>
-          <div class="state loc"><span>Local preview</span><b>24.5°</b><small>Only on this device</small></div>
+          <div class="state loc"><span>Local preview</span><b>24.5°</b><small>Only in this window</small></div>
         </div>
       </div>
     </section>
@@ -91,9 +121,9 @@
         <h2>Three steps, then leave it alone.</h2>
       </div>
       <ol class="steps">
-        <li><h3>Put a sensor in each zone</h3><p>Name the zone the way your crew does: Gym floor, Workshop, Loading bay.</p></li>
-        <li><h3>Set a target and a mode</h3><p>Use the dial or the plus and minus buttons. Pick cool, heat, auto or off.</p></li>
-        <li><h3>Let it hold, and read the alerts</h3><p>TempWise keeps the zone near target. If a sensor drops out or a room runs hot or humid, it shows up on the home screen.</p></li>
+        <li><h3>Put a sensor in each zone</h3><p>Name the zone the way your crew does: Gym floor, Workshop, Loading bay. Add or rename zones any time.</p></li>
+        <li><h3>Set a target, a mode and your hours</h3><p>Use the dial or the plus and minus buttons, then enter opening hours for each day of the week.</p></li>
+        <li><h3>Let it hold, and read the alerts</h3><p>TempWise keeps each zone near target, relaxes it when you’re closed, and shows anything that needs attention on the home screen.</p></li>
       </ol>
     </section>
 
@@ -104,10 +134,11 @@
           <h2>Made to read at arm’s length.</h2>
         </div>
         <div class="shots">
-          <figure><div class="phone"><img src="assets/screens/home.png" alt="Home screen with a temperature dial for the Gym floor zone, energy use and alerts" loading="lazy" width="780" height="1400"></div><figcaption><b>Home</b>Dial, mode, energy and alerts.</figcaption></figure>
-          <figure><div class="phone"><img src="assets/screens/sensors.png" alt="Sensor status screen listing each zone with temperature, humidity and status" loading="lazy" width="780" height="1400"></div><figcaption><b>Sensors</b>Every reading and its status.</figcaption></figure>
-          <figure><div class="phone"><img src="assets/screens/settings.png" alt="Settings screen with units, accent color and automation toggles" loading="lazy" width="780" height="1400"></div><figcaption><b>Settings</b>Units, automation and limits.</figcaption></figure>
-          <figure><div class="phone"><img src="assets/screens/local.png" alt="Home screen in Local mode with a purple preview of the target temperature" loading="lazy" width="780" height="1400"></div><figcaption><b>Local mode</b>Preview without changing anything.</figcaption></figure>
+          <figure><div class="phone"><img src="assets/screens/home.png" alt="Home screen with a temperature dial, scenes and a trend chart" loading="lazy" width="585" height="1050"></div><figcaption><b>Home</b>Dial, scenes, trend and alerts.</figcaption></figure>
+          <figure><div class="phone"><img src="assets/screens/sensors.png" alt="Sensor status screen with temperature, humidity and a trend line for each zone" loading="lazy" width="585" height="1050"></div><figcaption><b>Sensors</b>Every reading and its status.</figcaption></figure>
+          <figure><div class="phone"><img src="assets/screens/activity.png" alt="Activity screen listing alerts and recent changes" loading="lazy" width="585" height="1050"></div><figcaption><b>Activity</b>Alerts and every change.</figcaption></figure>
+          <figure><div class="phone"><img src="assets/screens/settings.png" alt="Settings screen with units, theme and zone editor" loading="lazy" width="585" height="1050"></div><figcaption><b>Settings</b>Zones, schedule and limits.</figcaption></figure>
+          <figure><div class="phone"><img src="assets/screens/light.png" alt="Home screen in the light theme" loading="lazy" width="585" height="1050"></div><figcaption><b>Light theme</b>Switch themes any time.</figcaption></figure>
         </div>
       </div>
     </section>
@@ -119,8 +150,9 @@
       </div>
       <details><summary>Is this connected to real thermostats?</summary><p>No. This site and the demo app show how TempWise works. Sensor readings are simulated so you can try every screen. The code is organized so you can connect your own sensors and controllers.</p></details>
       <details><summary>Does it sync between my phone and my computer?</summary><p>In the demo, settings sync between every open tab and window in the same browser. To sync separate devices, point <code>js/sync.js</code> at a backend such as Firebase or Supabase. The README shows how.</p></details>
-      <details><summary>Where is my data stored?</summary><p>In your browser’s local storage, on your device only. Use <b>Reset demo data</b> in the Account screen to clear it.</p></details>
-      <details><summary>Does it work offline?</summary><p>Yes. Fonts and scripts are bundled, so after the first load the demo runs without a connection.</p></details>
+      <details><summary>Where is my data stored?</summary><p>In your browser’s local storage, on your device only. Use <b>Reset demo data</b> in the Account screen to clear it, or export your settings first to keep a copy.</p></details>
+      <details><summary>Does it work offline?</summary><p>Yes. After the first visit, the site and the app load without a connection. Fonts and scripts are bundled.</p></details>
+      <details><summary>Can I install it?</summary><p>Yes. In Chrome, Edge and most Android browsers, use the install option in the address bar or menu. On iPhone, use Share, then Add to Home Screen. The Account screen shows an Install button when your browser offers one.</p></details>
       <details><summary>Can I use it for my own project?</summary><p>Yes. It is released under the MIT License. Fork it, change the zones and colors, and publish it on GitHub Pages.</p></details>
     </section>
 
@@ -138,12 +170,13 @@
   <footer class="foot">
     <div class="foot-in">
       <a class="brand" href="./"><img src="assets/favicon.svg" alt="" width="28" height="28"><b>Temp<span>Wise</span></b></a>
-      <p>Perfect temperature. Automatically. · MIT License · Fonts: Manrope and Unbounded (SIL OFL)</p>
+      <p>Perfect temperature. Automatically. · v1.1 · MIT License · Fonts: Manrope and Unbounded (SIL OFL)</p>
       <a data-repo href="https://github.com/">GitHub</a>
     </div>
   </footer>
 
   <script src="js/config.js"></script>
   <script src="js/site.js"></script>
+  <script src="js/pwa.js"></script>
 </body>
 </html>
