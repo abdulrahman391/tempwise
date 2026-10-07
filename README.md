@@ -14,6 +14,13 @@ app with zone thermostats, sensor status, settings and an account screen.
 > The demo uses **simulated sensor readings**. It is not connected to real
 > thermostats. See [Connect real hardware](#connect-real-hardware-and-devices).
 
+## Real sensor (ESP32 + DHT11)
+
+Flash `esp32/tempwise_dht11.ino` to your board, then in the app open **Settings → Real sensor** and connect
+by USB (Chrome/Edge) or Wi-Fi. The chosen zone then shows the real temperature and humidity. Full steps are in
+`esp32/README.md`. Browsers block `http` sensors on `https` pages, so on the published GitHub Pages site use USB;
+Wi-Fi works when you open the app from your own computer or network.
+
 ## What's new in 1.1
 
 - Redesigned landing page with a live, interactive thermostat, light and dark themes, and a mobile menu.

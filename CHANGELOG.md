@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.2
+- ESP32 + DHT11 support: Arduino sketch in `esp32/`, and Settings → Real sensor to show live readings in a zone (USB or Wi-Fi).
+
 ## 1.1
 - New landing page: live thermostat, themes, mobile menu, five app screenshots.
 - App: Activity tab, scenes, trend and sparkline charts, weekly schedule, zone add/rename/remove,

@@ -2,7 +2,7 @@
  * Pages: network first, falling back to the cache.
  * Everything else: cache first, refreshed in the background.
  * Bump VERSION when you publish changes so visitors get fresh files. */
-const VERSION = 'tempwise-v1.1';
+const VERSION = 'tempwise-v1.2';
 const CORE = [
   './', './index.html', './app/', './app/index.html', './manifest.webmanifest',
   './css/site.css', './css/app.css',
